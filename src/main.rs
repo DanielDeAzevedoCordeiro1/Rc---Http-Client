@@ -77,5 +77,22 @@ Connection: close\r\n\
 }
 
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
 
+    if args.len() > 6{
+        panic!("Digite os argumentos na seguinte ordem ---> rc METODO HOST PATH PORTA BODY");
+    }
+
+    match args[1].as_str().to_uppercase().as_str() {
+        "POST" => {
+            let body = http_post(&args[2], &args[3], args[4].parse().unwrap(), &args[5]
+            ).unwrap();
+            println!("{}", body);
+        },
+        "GET" => {
+            let body = http_get(&args[2], &args[3], args[4].parse().unwrap()).unwrap();
+            println!("{}", body);
+        },
+        _ => panic!("Metodo invalido")
+    }
 }
