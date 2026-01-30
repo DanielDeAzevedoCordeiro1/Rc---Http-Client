@@ -1,6 +1,6 @@
 # Rc - Http Client
 
-## Se trata de um simples client-http ainda incompleto com suporte apenas para requisicoes GET/POST
+## Se trata de um simples client-http ainda incompleto com suporte apenas para requisicoes GET/POST/DELETE
 
 # Tecnologias usadas
 
