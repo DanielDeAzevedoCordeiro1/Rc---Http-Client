@@ -55,3 +55,7 @@ rc METODO HOST PATH PORTA BODY
 ### POST
 
 ![Teste-POST](assets/Screenshot_2026-01-29_16-23-27.png)
+
+### DELETE
+
+![Teste-DELETE](assets/Screenshot_2026-01-30_20-27-56.png)
