@@ -34,15 +34,12 @@ Connection: close\r\n\
 
     let mut status = String::new();
     reader.read_line(&mut status)?;
-    println!("{}", status);
 
     loop {
         let mut headers = String::new();
         reader.read_line(&mut headers)?;
 
         if headers == "\r\n" { break; };
-
-        println!("{}", headers);
     }
 
     let mut body = String::new();
@@ -73,15 +70,12 @@ Connection: close\r\n\
 
     let mut status = String::new();
     reader.read_line(&mut status)?;
-    println!("{}", status);
 
     loop {
         let mut headers = String::new();
         reader.read_line(&mut headers)?;
 
         if headers == "\r\n" { break; };
-
-        println!("{}", headers);
     }
 
     let mut body = String::new();
@@ -108,15 +102,12 @@ Connection: close\r\n\
 
     let mut status = String::new();
     reader.read_line(&mut status)?;
-    println!("{}", status);
 
     loop {
         let mut headers = String::new();
         reader.read_line(&mut headers)?;
 
         if headers == "\r\n" { break; };
-
-        println!("{}", headers);
     }
 
     let mut body = String::new();
@@ -146,7 +137,6 @@ Connection: close\r\n\
 
     let mut status = String::new();
     reader.read_line(&mut status)?;
-    println!("{}", status);
 
     loop {
         let mut headers = String::new();
@@ -161,10 +151,42 @@ Connection: close\r\n\
 
 }
 
+fn http_patch(request: Request) -> Result<String, Box<dyn std::error::Error>> {
+    let mut stream = TcpStream::connect(format!("{}:{}", request.host, request.port))?;
+    let content_length = request.body.unwrap().len();
+
+    let request = format!(
+        "PATCH {} HTTP/1.1\r\n\
+Host: {}\r\n\
+Content-Type: application/json\r\n\
+Content-Length: {}\r\n\
+Connection: close\r\n\
+\r\n\
+{}",
+        request.path, request.host, content_length, request.body.unwrap()
+    );
+
+    stream.write_all(request.as_bytes())?;
+
+    let mut reader = BufReader::new(stream);
+
+    let mut status = String::new();
+    reader.read_line(&mut status)?;
+
+    loop {
+        let mut headers = String::new();
+        reader.read_line(&mut headers)?;
+
+        if headers == "\r\n" { break; };
+    }
+
+    let mut body = String::new();
+    reader.read_to_string(&mut body)?;
+    Ok(body)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-
-    println!("{:?}", args);
 
     if args.len() > 6{
         panic!("Digite os argumentos na seguinte ordem ---> rc METODO HOST PATH PORTA BODY");
@@ -193,6 +215,10 @@ fn main() {
             let body = http_get(request_args).unwrap();
             println!("{}", body);
         },
+        "PATCH" => {
+            let body = http_patch(request_args).unwrap();
+            println!("{}", body);
+        }
         "PUT" => {
             let body = http_put(request_args).unwrap();
             println!("{}", body);
