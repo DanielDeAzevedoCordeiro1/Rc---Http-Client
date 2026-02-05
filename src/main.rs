@@ -21,11 +21,11 @@ fn http_get(request: Request) -> Result<String, Box<dyn std::error::Error>> {
     let mut stream = TcpStream::connect(format!("{}:{}", request.host, request.port))?;
 
     let request = format!(
-        "GET {} HTTP/1.1\r\n\
+        "{} {} HTTP/1.1\r\n\
 Host: {}\r\n\
 Connection: close\r\n\
 \r\n",
-        request.path, request.host
+        request.method, request.path, request.host
     );
 
     stream.write_all(request.as_bytes())?;
@@ -54,14 +54,14 @@ fn http_post(request: Request) -> Result<String, Box<dyn std::error::Error>> {
     let content_length = request.body.unwrap().len();
 
     let request = format!(
-        "POST {} HTTP/1.1\r\n\
+        "{} {} HTTP/1.1\r\n\
 Host: {}\r\n\
 Content-Type: application/json\r\n\
 Content-Length: {}\r\n\
 Connection: close\r\n\
 \r\n\
 {}",
-        request.path, request.host, content_length, request.body.unwrap()
+        request.method, request.path, request.host, content_length, request.body.unwrap()
     );
 
     stream.write_all(request.as_bytes())?;
@@ -88,12 +88,12 @@ fn http_delete(request: Request) -> Result<String, Box<dyn std::error::Error>> {
     let mut stream = TcpStream::connect(format!("{}:{}", request.host, request.port))?;
 
     let request = format!(
-        "DELETE {} HTTP/1.1\r\n\
+        "{} {} HTTP/1.1\r\n\
 Host: {}\r\n\
 Connection: close\r\n\
 \r\n\
 ",
-        request.path, request.host
+        request.method, request.path, request.host
     );
 
     stream.write_all(request.as_bytes())?;
@@ -121,14 +121,14 @@ fn http_put(request: Request) -> Result<String, Box<dyn std::error::Error>> {
     let content_length = request.body.unwrap().len();
 
     let request = format!(
-        "PUT {} HTTP/1.1\r\n\
+        "{} {} HTTP/1.1\r\n\
 Host: {}\r\n\
 Content-Type: application/json\r\n\
 Content-Length: {}\r\n\
 Connection: close\r\n\
 \r\n\
 {}",
-        request.path, request.host, content_length, request.body.unwrap()
+        request.method, request.path, request.host, content_length, request.body.unwrap()
     );
 
     stream.write_all(request.as_bytes())?;
@@ -156,14 +156,14 @@ fn http_patch(request: Request) -> Result<String, Box<dyn std::error::Error>> {
     let content_length = request.body.unwrap().len();
 
     let request = format!(
-        "PATCH {} HTTP/1.1\r\n\
+        "{} {} HTTP/1.1\r\n\
 Host: {}\r\n\
 Content-Type: application/json\r\n\
 Content-Length: {}\r\n\
 Connection: close\r\n\
 \r\n\
 {}",
-        request.path, request.host, content_length, request.body.unwrap()
+        request.method, request.path, request.host, content_length, request.body.unwrap()
     );
 
     stream.write_all(request.as_bytes())?;
